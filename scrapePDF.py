@@ -15,7 +15,7 @@ content = BeautifulSoup(response.text, 'lxml')
 
 # extract URLs referencing PDF documents
 all_urls = content.find_all('a')
-#number = 0
+
 # loop over all URLs
 for url in all_urls:
     # try URLs containing 'href' attribute
@@ -30,10 +30,8 @@ for url in all_urls:
             pdf_response = requests.get(pdf_url)
             filename = pdf_url.split('/')[-1].split('.pdf')[0]
 
-            #number += 1
-            #filename = str(number)
 
-            # write PDF to local file
+            # write PDF to local file named "PDF"
             with open('./pdf/' + filename, 'wb') as f:
                 # write PDF to local file
                 f.write(pdf_response.content)
