@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import urllib.request,sys,time
 from bs4 import BeautifulSoup
@@ -10,15 +8,12 @@ import requests
 import pandas as pd
 
 
-# In[10]:
-
-
-pagesToGet= 1
+pagesToGet= 1       #Input number of pages to scrape
 
 upperframe=[]  
 for page in range(1,pagesToGet+1):
     print('processing page :', page)
-    url = 'https://www.aljazeera.com/search/earthquakes?page='+str(page)
+    url = 'https://www.aljazeera.com/search/earthquakes?page='+str(page)        #Insert URL less the portion where page number appears
     print(url)
     
     #an exception might be thrown, so the code should be in a try-except block
@@ -34,13 +29,13 @@ for page in range(1,pagesToGet+1):
     time.sleep(2)   
     soup=BeautifulSoup(page.text,'html.parser')
     frame=[]
-    links=soup.find_all('article',attrs={'class':'gc gc--type-customsearch#result gc--list gc--with-image'})
+    links=soup.find_all('article',attrs={'class':'gc gc--type-customsearch#result gc--list gc--with-image'})    #!! find the class where all new article links appear
     print(len(links))
     
     Links = []
     
     for j in links:
-        x = j.find('a')['href'].strip()
+        x = j.find('a')['href'].strip()     #obtain all news article links on current dearch page
         print (x)
         Links.append(x)
         
@@ -54,10 +49,10 @@ for page in range(1,pagesToGet+1):
 
         #print(soup)
 
-        title = soup.find_all('h1')[0].get_text()
+        title = soup.find_all('h1')[0].get_text()       #scrape the title of article
         print('\033[1m' + title + '\033[0m' + '\n')
 
-        text = soup.find('div', class_ = 'wysiwyg wysiwyg--all-content css-az20b6')
+        text = soup.find('div', class_ = 'wysiwyg wysiwyg--all-content css-az20b6')     #scrape the body of the article 
         body = ''
         try:
             for para in text.find_all("p"):
@@ -65,16 +60,13 @@ for page in range(1,pagesToGet+1):
             print(body)
             body = title + '\n' + body + '\n' + url
 
-            with open('./Articles/' + title, 'w+') as f:
+            with open('./Articles/' + title, 'w+') as f:        #write into local file (change file destination)
                 # write text to local file as .txt
                 f.write(body)
                 f.close()
                 
-        except AttributeError:
+        except AttributeError:              #Error handling for NoneType Error 
             continue
-
-
-# In[ ]:
 
 
 
